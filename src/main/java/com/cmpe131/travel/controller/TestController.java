@@ -1,18 +1,25 @@
 package com.cmpe131.travel.controller;
 
+import com.cmpe131.travel.repository.BookingRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
 
-    @GetMapping("/")
-    public String home() {
-        return "Travel API is running";
+    private final BookingRepository bookingRepository;
+
+    public TestController(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "Test endpoint works";
+    @GetMapping("/db-test")
+    public String testDB() {
+        return "DB result: " + bookingRepository.testConnection();
+    }
+
+    @GetMapping("/users")
+    public String getUsers() {
+        return bookingRepository.getAllUsers();
     }
 }
