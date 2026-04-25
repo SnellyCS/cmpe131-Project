@@ -8,3 +8,5 @@
 ```bash
 ./mvnw spring-boot:run
 or for PowerShell:   .\mvnw.cmd spring-boot:run
+
+http://localhost:8080/
