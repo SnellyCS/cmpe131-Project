@@ -37,6 +37,13 @@
         	<artifactId>spring-boot-starter-web</artifactId>
     	</dependency>
 
+		<!-- Swagger / OpenAPI documentation -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>3.0.3</version>
+		</dependency>
+
     	<!-- JPA (Entity, Repository, @Id, etc.) -->
     	<dependency>
         	<groupId>org.springframework.boot</groupId>
