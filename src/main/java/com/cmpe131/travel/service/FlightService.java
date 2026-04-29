@@ -29,7 +29,6 @@ public class FlightService {
 
     public FlightReservationResponse createFlightReservation(FlightReservationRequest req) {
         FlightReservation r = new FlightReservation();
-        r.setBookingId(req.getBookingId());
         r.setAirlineCode(req.getAirlineCode());
         r.setFlightNumber(req.getFlightNumber());
         r.setDepartureDate(req.getDepartureDate());

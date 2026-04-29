@@ -3,7 +3,6 @@ import java.math.BigDecimal;
 
 public class FlightReservationRequest {
 
-    private Long bookingId;
     private String airlineCode;
     private String flightNumber;
     private String departureDate;
@@ -16,8 +15,7 @@ public class FlightReservationRequest {
 
     public FlightReservationRequest() {}
 
-    public FlightReservationRequest(Long bookingId, String airlineCode, String flightNumber, String departureDate, String departureTime, String arriveDate, String arriveTime, BigDecimal rate, String originAirportCode, String destinationAirportCode) {
-        this.bookingId = bookingId;
+    public FlightReservationRequest(String airlineCode, String flightNumber, String departureDate, String departureTime, String arriveDate, String arriveTime, BigDecimal rate, String originAirportCode, String destinationAirportCode) {
         this.airlineCode = airlineCode;
         this.flightNumber = flightNumber;
         this.departureDate = departureDate;
@@ -31,10 +29,6 @@ public class FlightReservationRequest {
 
 
     //Accessors
-    public Long getBookingId() {
-        return bookingId;
-    }
-
     public String getAirlineCode() {
         return airlineCode;
     }
@@ -73,10 +67,6 @@ public class FlightReservationRequest {
 
 
     //Setters
-    public void setBookingId(Long bookingId) { 
-        this.bookingId = bookingId; 
-    }
-
     public void setAirlineCode(String airlineCode) { 
         this.airlineCode = airlineCode; 
     }
