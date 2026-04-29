@@ -19,7 +19,6 @@ public class FlightReservationResponse {
 
     public FlightReservationResponse(Long reservationNo, Long bookingId, String airlineCode, String flightNumber, String departureDate, String departureTime, String arriveDate, String arriveTime, BigDecimal rate, String originAirportCode, String destinationAirportCode) {
         this.reservationNo = reservationNo;
-        this.reservationNo = reservationNo;
         this.bookingId = bookingId;
         this.airlineCode = airlineCode;
         this.flightNumber = flightNumber;

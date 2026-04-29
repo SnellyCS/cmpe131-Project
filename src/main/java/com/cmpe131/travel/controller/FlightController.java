@@ -3,6 +3,7 @@ import com.cmpe131.travel.dto.FlightReservationRequest;
 import com.cmpe131.travel.dto.FlightReservationResponse;
 import com.cmpe131.travel.service.FlightService;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flights")
@@ -14,14 +15,22 @@ public class FlightController {
         this.service = service;
     }
 
+
     @PostMapping("/reservations")
     public FlightReservationResponse createFlightReservation(@RequestBody FlightReservationRequest request) {
         return service.createFlightReservation(request);
     }
 
-
-    @GetMapping("/test")
-    public String getAllFlights() {
-        return "flgiht from SFO to JFK";
+    @GetMapping("/reservations/{bookingId}")
+    public List<FlightReservationResponse> getFlightReservationsByBookingId(@PathVariable Long bookingId) {
+        return service.getFlightReservationsByBookingId(bookingId);
     }
+
+
+    @GetMapping("/search")
+    public String searchFlights(@RequestParam String fromCode, @RequestParam String toCode, @RequestParam String departDate, @RequestParam String returnDate, @RequestParam(defaultValue = "1") int adults) {
+        return service.searchFlights(fromCode, toCode, departDate, returnDate, adults);
+    }
+
+
 }
