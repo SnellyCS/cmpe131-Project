@@ -3,6 +3,8 @@ package com.cmpe131.travel.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cmpe131.travel.repository.BookingRepository;
+
 @RestController
 public class TestController {
 

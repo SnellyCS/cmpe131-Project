@@ -1,15 +1,17 @@
 package com.cmpe131.travel.service;
-import com.cmpe131.travel.dto.FlightReservationRequest;
-import com.cmpe131.travel.dto.FlightReservationResponse;
-import com.cmpe131.travel.model.FlightReservation;
-import com.cmpe131.travel.repository.FlightReservationRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.cmpe131.travel.dto.FlightReservationRequest;
+import com.cmpe131.travel.dto.FlightReservationResponse;
+import com.cmpe131.travel.model.FlightReservation;
+import com.cmpe131.travel.repository.FlightReservationRepository;
 
 @Service
 public class FlightService {
