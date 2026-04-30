@@ -3,12 +3,15 @@ package com.cmpe131.travel.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cmpe131.travel.dto.HotelDTO;
+import com.cmpe131.travel.dto.HotelReservationResponse;
 import com.cmpe131.travel.service.HotelService;
+import com.cmpe131.travel.service.BookingService;
 
 @RestController
 @RequestMapping("/api/v1/hotels")
@@ -50,5 +53,11 @@ public class HotelController {
         @RequestParam(defaultValue = "1") int roomNumber
     ) {
         return hotelService.searchPetFriendlyHotels(destId, checkin, checkout, adults, roomNumber);
+    }
+
+    // GET /api/v1/hotels/reservations/{bookingId}
+    @GetMapping("/reservations/{bookingId}")
+    public HotelReservationResponse getHotelReservationByBookingId(@PathVariable Long bookingId) {
+        return hotelService.getHotelReservationByBookingId(bookingId);
     }
 }

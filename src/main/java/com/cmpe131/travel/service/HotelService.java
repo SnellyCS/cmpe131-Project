@@ -6,11 +6,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.cmpe131.travel.dto.HotelDTO;
+import com.cmpe131.travel.dto.HotelReservationResponse;
+import com.cmpe131.travel.model.HotelReservation;
+import com.cmpe131.travel.repository.HotelReservationRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,6 +23,7 @@ public class HotelService {
 
     private final PetFilterService petFilterService;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final HotelReservationRepository hotelReservationRepository;
 
     @Value("${rapidapi.key}")
     private String apiKey;
@@ -26,8 +31,9 @@ public class HotelService {
     @Value("${rapidapi.host}")
     private String apiHost;
 
-    public HotelService(PetFilterService petFilterService) {
+    public HotelService(PetFilterService petFilterService, HotelReservationRepository hotelReservationRepository) {
         this.petFilterService = petFilterService;
+        this.hotelReservationRepository = hotelReservationRepository;
     }
 
     public String getRawResponse(String destId, String checkin, String checkout) {
@@ -118,5 +124,25 @@ public class HotelService {
     }
 
     return hotels;
-}
+    }
+
+    private HotelReservationResponse toResponse(HotelReservation r) {
+    return new HotelReservationResponse(
+            r.getReservationNo(),
+            r.getBookingId(),
+            r.getHotelCode(),
+            r.getHotelName(),
+            r.getCheckInDate(),
+            r.getCheckOutDate(),
+            r.getHotelRate()
+        );
+    }
+
+    public HotelReservationResponse getHotelReservationByBookingId(Long bookingId) {
+        Optional<HotelReservation> reservation = hotelReservationRepository
+                .findByBookingId(bookingId)
+                .stream()
+                .findFirst();
+        return reservation.map(this::toResponse).orElse(null);
+    }
 }
