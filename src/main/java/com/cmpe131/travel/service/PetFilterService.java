@@ -1,12 +1,21 @@
 package com.cmpe131.travel.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
 public class PetFilterService {
 
-    // TODO: Check hotel data for pet-friendly keywords
-    // Example keywords: "pet friendly", "pets allowed", "dog friendly"
+    private static final List<String> PET_KEYWORDS = List.of(
+        "pet friendly", "pet-friendly", "pets allowed", "pets welcome",
+        "dog friendly", "dog-friendly", "dogs allowed", "cats allowed",
+        "animals allowed", "bring your pet"
+    );
 
-    // TODO: Later add nearby parks/walking location logic
+    public boolean isPetFriendly(String hotelJson) {
+        if (hotelJson == null || hotelJson.isBlank()) return false;
+        String lower = hotelJson.toLowerCase();
+        return PET_KEYWORDS.stream().anyMatch(lower::contains);
+    }
 }

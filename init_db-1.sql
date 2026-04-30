@@ -150,7 +150,7 @@ CREATE TABLE Activity_Reservations (
 
 -- 1. Seed Users
 INSERT INTO Users (First_Name, Last_Name, Email, Phone_Number) VALUES
-('John', 'Doe', 'john.doe@example.com', '555-123-4567'),
+('John', 'Doe', 'john.doe@example.com', '555-123-4567');
 ('Jane', 'Smith', 'jane.smith@email.co.uk', '44-20-7946-0958');
 ('Dylan', 'Snellstrom', 'dylan.snellstrom@sjsu.edu', '408-832-4690');
 
