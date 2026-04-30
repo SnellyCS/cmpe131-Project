@@ -69,6 +69,11 @@ public class FlightService {
         return repository.findByBookingId(bookingId).stream().map(this::response).toList();
     }
 
+    public FlightReservationResponse getFlightReservationByReservationNo(Long reservationNo) {
+        FlightReservation reservation = repository.findById(reservationNo).orElseThrow(() -> new RuntimeException("Flight reservation not found: " + reservationNo));
+        return response(reservation);
+    }
+
 
 
 }

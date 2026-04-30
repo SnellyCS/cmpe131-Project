@@ -29,6 +29,11 @@ public class FlightController {
         return bookingService.getFlightByBookingId(bookingId);
     }
 
+    @GetMapping("/reservations/reservation/{reservationNo}")
+    public FlightReservationResponse getFlightReservationByReservationNo(@PathVariable Long reservationNo) {
+        return service.getFlightReservationByReservationNo(reservationNo);
+    }
+
     @GetMapping("/search")
     public String searchFlights(@RequestParam String fromCode, @RequestParam String toCode, @RequestParam String departDate, @RequestParam String returnDate, @RequestParam(defaultValue = "1") int adults) {
         return service.searchFlights(fromCode, toCode, departDate, returnDate, adults);
