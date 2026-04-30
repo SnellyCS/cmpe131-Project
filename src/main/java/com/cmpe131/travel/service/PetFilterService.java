@@ -16,9 +16,10 @@ public class PetFilterService {
             return List.of();
         }
 
-        // Keep only pet-friendly hotels
+        // Keep only pet-friendly hotels AND update the flag
         return hotels.stream()
                 .filter(this::isPetFriendly)
+                .peek(hotel -> hotel.setIsPetFriendly(true)) // 🔥 force it to true
                 .toList();
     }
 
@@ -46,7 +47,7 @@ public class PetFilterService {
         return data.contains("pet friendly") ||
                data.contains("pets allowed") ||
                data.contains("dog friendly") ||
-               data.contains("pets") ||
-               data.contains("pet");
+               data.contains("cats allowed") ||
+               data.contains("pet allowed");
     }
 }
