@@ -1,53 +1,66 @@
 package com.cmpe131.travel.service;
 
-import com.cmpe131.travel.dto.HotelDTO;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.cmpe131.travel.dto.HotelDTO;
 
 @Service
 public class PetFilterService {
 
-    // Filters hotel data from HotelService
-    public List<HotelDTO> filterPetFriendlyHotels(List<HotelDTO> hotels) {
+    private static final List<String> PET_KEYWORDS = List.of(
+            "pet friendly",
+            "pet-friendly",
+            "pets allowed",
+            "pets welcome",
+            "dog friendly",
+            "dog-friendly",
+            "dogs allowed",
+            "cats allowed",
+            "animals allowed",
+            "bring your pet",
+            "pet allowed"
+    );
 
-        // If HotelService gives no hotels, return empty list
+    public List<HotelDTO> filterPetFriendlyHotels(List<HotelDTO> hotels) {
         if (hotels == null || hotels.isEmpty()) {
             return List.of();
         }
 
-        // Keep only pet-friendly hotels AND update the flag
         return hotels.stream()
                 .filter(this::isPetFriendly)
-                .peek(hotel -> hotel.setIsPetFriendly(true)) // 🔥 force it to true
+                .peek(hotel -> hotel.setIsPetFriendly(true))
                 .toList();
     }
 
-    // Checks one hotel for pet-friendly info
     private boolean isPetFriendly(HotelDTO hotel) {
-
         if (hotel == null) {
             return false;
         }
 
-        // If already marked pet-friendly
         if (hotel.isPetFriendly()) {
             return true;
         }
 
-        // Check description text
         String description = hotel.getDescription();
 
-        if (description == null) {
+        if (description == null || description.isBlank()) {
             return false;
         }
 
-        String data = description.toLowerCase();
+        String lower = description.toLowerCase();
 
-        return data.contains("pet friendly") ||
-               data.contains("pets allowed") ||
-               data.contains("dog friendly") ||
-               data.contains("cats allowed") ||
-               data.contains("pet allowed");
+        return PET_KEYWORDS.stream().anyMatch(lower::contains);
+    }
+
+    public boolean isPetFriendly(String hotelJson) {
+        if (hotelJson == null || hotelJson.isBlank()) {
+            return false;
+        }
+
+        String lower = hotelJson.toLowerCase();
+
+        return PET_KEYWORDS.stream().anyMatch(lower::contains);
     }
 }

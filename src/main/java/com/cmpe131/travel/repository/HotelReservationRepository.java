@@ -1,11 +1,13 @@
 package com.cmpe131.travel.repository;
-import com.cmpe131.travel.model.Booking;
+
+import com.cmpe131.travel.model.HotelReservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
-public interface BookingRepository extends JpaRepository<Booking, Long> {
+public interface HotelReservationRepository extends JpaRepository<HotelReservation, Long> {
     /*
      * Spring Data JPA handles implementation.
      * Inherited methods from JpaRepository:
@@ -14,5 +16,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
      * findById(x);
      * deleteById(x);
      */
-    List<Booking> findByUserId(Long userId);
+    List<HotelReservation> findByBookingId(Long bookingId);
 }

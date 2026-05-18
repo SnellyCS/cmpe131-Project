@@ -1,11 +1,13 @@
 package com.cmpe131.travel.controller;
 
-import com.cmpe131.travel.dto.HotelDTO;
-import com.cmpe131.travel.service.HotelService;
-import com.cmpe131.travel.service.PetFilterService;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.cmpe131.travel.dto.HotelDTO;
+import com.cmpe131.travel.dto.HotelReservationResponse;
+import com.cmpe131.travel.service.HotelService;
+import com.cmpe131.travel.service.PetFilterService;
 
 @RestController
 @RequestMapping("/api/v1/hotels")
@@ -19,53 +21,40 @@ public class HotelController {
         this.petFilterService = petFilterService;
     }
 
+    @GetMapping("/raw")
+    public String rawSearch(
+            @RequestParam String destId,
+            @RequestParam String checkin,
+            @RequestParam String checkout
+    ) {
+        return hotelService.getRawResponse(destId, checkin, checkout);
+    }
+
     @GetMapping("/search")
-    public String searchHotels() {
-        return "TODO: hotel search endpoint";
+    public List<HotelDTO> searchHotels(
+            @RequestParam String destId,
+            @RequestParam String checkin,
+            @RequestParam String checkout,
+            @RequestParam(defaultValue = "2") int adults,
+            @RequestParam(defaultValue = "1") int roomNumber
+    ) {
+        return hotelService.searchHotels(destId, checkin, checkout, adults, roomNumber);
     }
 
     @GetMapping("/pet-friendly")
     public List<HotelDTO> searchPetFriendlyHotels(
-            @RequestParam(required = false) String destId,
-            @RequestParam(required = false) String checkin,
-            @RequestParam(required = false) String checkout
+            @RequestParam String destId,
+            @RequestParam String checkin,
+            @RequestParam String checkout,
+            @RequestParam(defaultValue = "2") int adults,
+            @RequestParam(defaultValue = "1") int roomNumber
     ) {
-
-        // TEMP MOCK DATA TO TEST
-        // Later, replace this with Kai's HotelService data
-        List<HotelDTO> hotels = List.of(
-                new HotelDTO(
-                        "The Plaza",
-                        "Luxury hotel. Pet friendly rooms available.",
-                        "768 5th Ave, New York",
-                        450.00,
-                        true
-                ),
-                new HotelDTO(
-                        "The Savoy",
-                        "Historic luxury hotel near the river.",
-                        "Strand, London",
-                        500.00,
-                        false
-                ),
-                new HotelDTO(
-                        "Dog Friendly Inn",
-                        "Pets allowed and dog friendly stay.",
-                        "123 Pet Street",
-                        199.99,
-                        false
-                )
-        );
-
+        List<HotelDTO> hotels = hotelService.searchHotels(destId, checkin, checkout, adults, roomNumber);
         return petFilterService.filterPetFriendlyHotels(hotels);
     }
 
-    /*
-     * Note for when Kai is done:
-     *
-     * Replace the mock hotel list with:
-     *
-     * List<HotelDTO> hotels = hotelService.searchHotels(destId, checkin, checkout);
-     * return petFilterService.filterPetFriendlyHotels(hotels);
-     */
+    @GetMapping("/reservations/{bookingId}")
+    public HotelReservationResponse getHotelReservationByBookingId(@PathVariable Long bookingId) {
+        return hotelService.getHotelReservationByBookingId(bookingId);
+    }
 }
