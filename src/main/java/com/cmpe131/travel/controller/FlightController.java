@@ -35,7 +35,17 @@ public class FlightController {
     }
 
     @GetMapping("/search")
-    public String searchFlights(@RequestParam String fromCode, @RequestParam String toCode, @RequestParam String departDate, @RequestParam String returnDate, @RequestParam(defaultValue = "1") int adults) {
+    public String searchFlights(
+            @RequestParam("from_code") String fromCode,
+            @RequestParam("to_code") String toCode,
+            @RequestParam("depart_date") String departDate,
+            @RequestParam(value = "return_date", required = false) String returnDate,
+            @RequestParam(defaultValue = "1") int adults,
+            @RequestParam(defaultValue = "0") int children
+    ) {
+        //fromCode = fromCode.replace(".AIRPORT", "");
+        //toCode = toCode.replace(".AIRPORT", "");
+
         return service.searchFlights(fromCode, toCode, departDate, returnDate, adults);
     }
 

@@ -55,15 +55,38 @@ public class FlightService {
 
     public String searchFlights(String fromCode, String toCode, String departDate, String returnDate, int adults) {
         try {
-            String url = "https://booking-com.p.rapidapi.com/v1/flights/search" + "?from_code=" + fromCode + "&to_code=" + toCode + "&depart_date=" + departDate + "&return_date=" + returnDate + "&adults=" + adults + "&currency=USD" + "&locale=en-gb" + "&order_by=BEST" + "&flight_type=ROUNDTRIP" + "&cabin_class=ECONOMY";
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).header("x-rapidapi-key", apiKey).header("x-rapidapi-host", apiHost).GET().build();
-            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            String url = "https://booking-com.p.rapidapi.com/v1/flights/search"
+                    + "?from_code=" + fromCode
+                    + "&to_code=" + toCode
+                    + "&depart_date=" + departDate
+                    + "&adults=" + adults
+                    + "&currency=USD"
+                    + "&locale=en-gb"
+                    + "&order_by=BEST"
+                    + "&cabin_class=ECONOMY";
+
+            if (returnDate != null && !returnDate.isBlank()) {
+                url += "&return_date=" + returnDate;
+                url += "&flight_type=ROUNDTRIP";
+            } else {
+                url += "&flight_type=ONEWAY";
+            }
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("x-rapidapi-key", apiKey)
+                    .header("x-rapidapi-host", apiHost)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
             return response.body();
+
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
-
     }
 
 
