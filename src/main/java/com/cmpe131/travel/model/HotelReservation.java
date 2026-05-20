@@ -17,7 +17,7 @@ public class HotelReservation {
     @Column(name = "Hotel_Code")
     private String hotelCode;
 
-    @Column(name = "Hotel_Name")
+    @Transient
     private String hotelName;
 
     @Column(name = "Check_In_Date")
@@ -26,7 +26,7 @@ public class HotelReservation {
     @Column(name = "Check_Out_Date")
     private String checkOutDate;
 
-    @Column(name = "Hotel_Rate")
+    @Column(name = "Rate")
     private BigDecimal hotelRate;
 
     public HotelReservation() {}

@@ -1,170 +1,68 @@
 package com.cmpe131.travel.dto;
-import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 public class BookingResponse {
 
+    @JsonProperty("Booking_Id")
     private Long bookingId;
 
-    // User info
+    @JsonProperty("User_Id")
     private Long userId;
-    private String userName;
-    private String userEmail;
 
-    // Flight info
-    private String airlineCode;
-    private String flightNumber;
-    private String originAirportCode;
-    private String destinationAirportCode;
-    private String departureDate;
-    private String departureTime;
-    private String arriveDate;
-    private String arriveTime;
-    private BigDecimal flightRate;
+    @JsonProperty("Agent_Id")
+    private Long agentId;
 
-    // Hotel info
-    private String hotelCode;
-    private String hotelName;
-    private String checkInDate;
-    private String checkOutDate;
-    private BigDecimal hotelRate;
+    @JsonProperty("Start_Date")
+    private String startDate;
+
+    @JsonProperty("End_Date")
+    private String endDate;
+
+    @JsonProperty("hotel_reservations")
+    private List<HotelReservationResponse> hotelReservations;
+
+    @JsonProperty("flight_reservations")
+    private List<FlightReservationResponse> flightReservations;
 
     public BookingResponse() {}
 
-    public BookingResponse(Long bookingId, Long userId, String userName, String userEmail,
-                           String airlineCode, String flightNumber, String originAirportCode,
-                           String destinationAirportCode, String departureDate, String departureTime,
-                           String arriveDate, String arriveTime, BigDecimal flightRate,
-                           String hotelCode, String hotelName, String checkInDate,
-                           String checkOutDate, BigDecimal hotelRate) {
+    public BookingResponse(
+            Long bookingId,
+            Long userId,
+            Long agentId,
+            String startDate,
+            String endDate,
+            List<HotelReservationResponse> hotelReservations,
+            List<FlightReservationResponse> flightReservations
+    ) {
         this.bookingId = bookingId;
         this.userId = userId;
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.airlineCode = airlineCode;
-        this.flightNumber = flightNumber;
-        this.originAirportCode = originAirportCode;
-        this.destinationAirportCode = destinationAirportCode;
-        this.departureDate = departureDate;
-        this.departureTime = departureTime;
-        this.arriveDate = arriveDate;
-        this.arriveTime = arriveTime;
-        this.flightRate = flightRate;
-        this.hotelCode = hotelCode;
-        this.hotelName = hotelName;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.hotelRate = hotelRate;
+        this.agentId = agentId;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.hotelReservations = hotelReservations;
+        this.flightReservations = flightReservations;
     }
 
-    // Accessors
-    public Long getBookingId() {
-        return bookingId;
-    }
-    public Long getUserId() {
-        return userId;
-    }
-    public String getUserName() {
-        return userName;
-    }
-    public String getUserEmail() {
-        return userEmail;
-    }
-    public String getAirlineCode() {
-        return airlineCode;
-    }
-    public String getFlightNumber() {
-        return flightNumber;
-    }
-    public String getOriginAirportCode() {
-        return originAirportCode;
-    }
-    public String getDestinationAirportCode() {
-        return destinationAirportCode;
-    }
-    public String getDepartureDate() {
-        return departureDate;
-    }
-    public String getDepartureTime() {
-        return departureTime;
-    }
-    public String getArriveDate() {
-        return arriveDate;
-    }
-    public String getArriveTime() {
-        return arriveTime;
-    }
-    public BigDecimal getFlightRate() {
-        return flightRate;
-    }
-    public String getHotelCode() {
-        return hotelCode;
-    }
-    public String getHotelName() {
-        return hotelName;
-    }
-    public String getCheckInDate() {
-        return checkInDate;
-    }
-    public String getCheckOutDate() {
-        return checkOutDate;
-    }
-    public BigDecimal getHotelRate() {
-        return hotelRate;
-    }
+    public Long getBookingId() { return bookingId; }
+    public Long getUserId() { return userId; }
+    public Long getAgentId() { return agentId; }
+    public String getStartDate() { return startDate; }
+    public String getEndDate() { return endDate; }
+    public List<HotelReservationResponse> getHotelReservations() { return hotelReservations; }
+    public List<FlightReservationResponse> getFlightReservations() { return flightReservations; }
 
-    // Setters
-    public void setBookingId(Long bookingId) {
-        this.bookingId = bookingId;
+    public void setBookingId(Long bookingId) { this.bookingId = bookingId; }
+    public void setUserId(Long userId) { this.userId = userId; }
+    public void setAgentId(Long agentId) { this.agentId = agentId; }
+    public void setStartDate(String startDate) { this.startDate = startDate; }
+    public void setEndDate(String endDate) { this.endDate = endDate; }
+    public void setHotelReservations(List<HotelReservationResponse> hotelReservations) {
+        this.hotelReservations = hotelReservations;
     }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-    public void setAirlineCode(String airlineCode) {
-        this.airlineCode = airlineCode;
-    }
-    public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
-    }
-    public void setOriginAirportCode(String originAirportCode) {
-        this.originAirportCode = originAirportCode;
-    }
-    public void setDestinationAirportCode(String destinationAirportCode) {
-        this.destinationAirportCode = destinationAirportCode;
-    }
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
-    }
-    public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
-    }
-    public void setArriveDate(String arriveDate) {
-        this.arriveDate = arriveDate;
-    }
-    public void setArriveTime(String arriveTime) {
-        this.arriveTime = arriveTime;
-    }
-    public void setFlightRate(BigDecimal flightRate) {
-        this.flightRate = flightRate;
-    }
-    public void setHotelCode(String hotelCode) {
-        this.hotelCode = hotelCode;
-    }
-    public void setHotelName(String hotelName) {
-        this.hotelName = hotelName;
-    }
-    public void setCheckInDate(String checkInDate) {
-        this.checkInDate = checkInDate;
-    }
-    public void setCheckOutDate(String checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
-    public void setHotelRate(BigDecimal hotelRate) {
-        this.hotelRate = hotelRate;
+    public void setFlightReservations(List<FlightReservationResponse> flightReservations) {
+        this.flightReservations = flightReservations;
     }
 }

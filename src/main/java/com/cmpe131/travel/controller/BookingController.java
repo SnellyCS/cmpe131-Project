@@ -16,7 +16,7 @@ public class BookingController {
     }
 
     // POST /api/v1/bookings
-    @PostMapping
+    @PostMapping({"", "/"})
     public BookingResponse createBooking(@RequestBody BookingRequest request) {
         return service.createBooking(request);
     }
@@ -32,4 +32,10 @@ public class BookingController {
     public List<BookingResponse> getBookingsByUser(@PathVariable Long userId) {
         return service.getBookingsByUserId(userId);
     }
+
+    @GetMapping("/by-agent-user")
+    public List<BookingResponse> getBookingsByAgentAndUser(@RequestParam("agent_id") Long agentId, @RequestParam("user_id") Long userId) {
+        return service.getBookingsByUserId(userId);
+    }
+
 }

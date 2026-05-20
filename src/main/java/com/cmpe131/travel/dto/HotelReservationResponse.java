@@ -1,15 +1,28 @@
 package com.cmpe131.travel.dto;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 public class HotelReservationResponse {
 
+    @JsonProperty("Reservation_No")
     private Long reservationNo;
+
+    @JsonProperty("Booking_Id")
     private Long bookingId;
+
+    @JsonProperty("Hotel_Code")
     private String hotelCode;
+
+    @JsonProperty("Hotel_Name")
     private String hotelName;
+
+    @JsonProperty("Check_In_Date")
     private String checkInDate;
+
+    @JsonProperty("Check_Out_Date")
     private String checkOutDate;
+
+    @JsonProperty("Rate")
     private BigDecimal hotelRate;
 
     public HotelReservationResponse() {}

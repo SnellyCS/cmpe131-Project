@@ -1,18 +1,40 @@
 package com.cmpe131.travel.dto;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FlightReservationResponse {
 
+    @JsonProperty("Reservation_No")
     private Long reservationNo;
+
+    @JsonProperty("Booking_Id")
     private Long bookingId;
+
+    @JsonProperty("Airline_Code")
     private String airlineCode;
+
+    @JsonProperty("Flight_Number")
     private String flightNumber;
+
+    @JsonProperty("Departure_Date")
     private String departureDate;
+
+    @JsonProperty("Departure_Time")
     private String departureTime;
+
+    @JsonProperty("Arrive_Date")
     private String arriveDate;
+
+    @JsonProperty("Arrive_Time")
     private String arriveTime;
+
+    @JsonProperty("Rate")
     private BigDecimal rate;
+
+    @JsonProperty("Origin_Airport_Code")
     private String originAirportCode;
+
+    @JsonProperty("Destination_Airport_Code")
     private String destinationAirportCode;
 
     public FlightReservationResponse() {}

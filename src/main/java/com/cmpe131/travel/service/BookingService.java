@@ -12,6 +12,7 @@ import com.cmpe131.travel.repository.FlightReservationRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import com.cmpe131.travel.dto.HotelReservationResponse;
 
 @Service
 public class BookingService {
@@ -26,118 +27,121 @@ public class BookingService {
         this.flightReservationRepository = flightReservationRepository;
     }
 
+
+
     public BookingResponse createBooking(BookingRequest req) {
-        Booking b = new Booking();
-        b.setUserId(req.getUserId());
-        b.setUserName(req.getUserName());
-        b.setUserEmail(req.getUserEmail());
-        b.setAirlineCode(req.getAirlineCode());
-        b.setFlightNumber(req.getFlightNumber());
-        b.setOriginAirportCode(req.getOriginAirportCode());
-        b.setDestinationAirportCode(req.getDestinationAirportCode());
-        b.setDepartureDate(req.getDepartureDate());
-        b.setDepartureTime(req.getDepartureTime());
-        b.setArriveDate(req.getArriveDate());
-        b.setArriveTime(req.getArriveTime());
-        b.setFlightRate(req.getFlightRate());
-        b.setHotelCode(req.getHotelCode());
-        b.setHotelName(req.getHotelName());
-        b.setCheckInDate(req.getCheckInDate());
-        b.setCheckOutDate(req.getCheckOutDate());
-        b.setHotelRate(req.getHotelRate());
 
-        Booking saved = repository.save(b);
+        Booking booking = new Booking();
 
-        HotelReservation hr = new HotelReservation();
-        hr.setBookingId(saved.getBookingId());
-        hr.setHotelCode(req.getHotelCode());
-        hr.setHotelName(req.getHotelName());
-        hr.setCheckInDate(req.getCheckInDate());
-        hr.setCheckOutDate(req.getCheckOutDate());
-        hr.setHotelRate(req.getHotelRate());
+        booking.setUserId(req.getUserId());
+        booking.setAgentId(req.getAgentId());
+        booking.setStartDate(req.getStartDate());
+        booking.setEndDate(req.getEndDate());
 
-        hotelReservationRepository.save(hr);
+        Booking savedBooking = repository.save(booking);
 
-        FlightReservation fr = new FlightReservation();
-        fr.setBookingId(saved.getBookingId());
-        fr.setAirlineCode(req.getAirlineCode());
-        fr.setFlightNumber(req.getFlightNumber());
-        fr.setDepartureDate(req.getDepartureDate());
-        fr.setDepartureTime(req.getDepartureTime());
-        fr.setArriveDate(req.getArriveDate());
-        fr.setArriveTime(req.getArriveTime());
-        fr.setRate(req.getFlightRate());
-        fr.setOriginAirportCode(req.getOriginAirportCode());
-        fr.setDestinationAirportCode(req.getDestinationAirportCode());
-        
-        flightReservationRepository.save(fr);
+        if (req.getHotelReservations() != null) {
+            for (BookingRequest.HotelReservationItem item : req.getHotelReservations()) {
 
-        return toResponse(saved);
+                HotelReservation hr = new HotelReservation();
+
+                hr.setBookingId(savedBooking.getBookingId());
+                hr.setHotelCode(String.valueOf(item.getHotelCode()));
+                hr.setCheckInDate(item.getCheckInDate());
+                hr.setCheckOutDate(item.getCheckOutDate());
+                hr.setHotelRate(item.getRate());
+
+                hotelReservationRepository.save(hr);
+            }
+        }
+
+        if (req.getFlightReservations() != null) {
+            for (BookingRequest.FlightReservationItem item : req.getFlightReservations()) {
+
+                FlightReservation fr = new FlightReservation();
+
+                fr.setBookingId(savedBooking.getBookingId());
+                fr.setAirlineCode(item.getAirlineCode());
+                fr.setFlightNumber(item.getFlightNumber());
+                fr.setDepartureDate(item.getDepartureDate());
+                fr.setDepartureTime(item.getDepartureTime());
+                fr.setArriveDate(item.getArriveDate());
+                fr.setArriveTime(item.getArriveTime());
+                fr.setRate(item.getRate());
+                fr.setOriginAirportCode(item.getOriginAirportCode());
+                fr.setDestinationAirportCode(item.getDestinationAirportCode());
+
+                flightReservationRepository.save(fr);
+            }
+        }
+        return getBookingById(savedBooking.getBookingId());
     }
+
+
+
 
     public BookingResponse getBookingById(Long bookingId) {
-        Optional<Booking> booking = repository.findById(bookingId);
-        return booking.map(this::toResponse).orElse(null);
+        Booking booking = repository.findById(bookingId).orElse(null);
+
+        if (booking == null) {
+            return null;
+        }
+
+        List<HotelReservationResponse> hotels =
+                hotelReservationRepository.findByBookingId(bookingId)
+                        .stream()
+                        .map(h -> new HotelReservationResponse(
+                                h.getReservationNo(),
+                                h.getBookingId(),
+                                h.getHotelCode(),
+                                h.getHotelName(),
+                                h.getCheckInDate(),
+                                h.getCheckOutDate(),
+                                h.getHotelRate()
+                        ))
+                        .toList();
+
+        List<FlightReservationResponse> flights =
+                flightReservationRepository.findByBookingId(bookingId)
+                        .stream()
+                        .map(f -> new FlightReservationResponse(
+                                f.getReservationNo(),
+                                f.getBookingId(),
+                                f.getAirlineCode(),
+                                f.getFlightNumber(),
+                                f.getDepartureDate(),
+                                f.getDepartureTime(),
+                                f.getArriveDate(),
+                                f.getArriveTime(),
+                                f.getRate(),
+                                f.getOriginAirportCode(),
+                                f.getDestinationAirportCode()
+                        ))
+                        .toList();
+
+        return new BookingResponse(
+                booking.getBookingId(),
+                booking.getUserId(),
+                booking.getAgentId(),
+                booking.getStartDate(),
+                booking.getEndDate(),
+                hotels,
+                flights
+        );
     }
+
+
+
+
 
     public List<BookingResponse> getBookingsByUserId(Long userId) {
-        return repository.findByUserId(userId).stream()
-                .map(this::toResponse)
-                .toList();
+        return repository.findByUserId(userId)
+            .stream()
+            .map(b -> getBookingById(b.getBookingId()))
+            .toList();
     }
 
-    private BookingResponse toResponse(Booking b) {
-        return new BookingResponse(
-                b.getBookingId(),
-                b.getUserId(),
-                b.getUserName(),
-                b.getUserEmail(),
-                b.getAirlineCode(),
-                b.getFlightNumber(),
-                b.getOriginAirportCode(),
-                b.getDestinationAirportCode(),
-                b.getDepartureDate(),
-                b.getDepartureTime(),
-                b.getArriveDate(),
-                b.getArriveTime(),
-                b.getFlightRate(),
-                b.getHotelCode(),
-                b.getHotelName(),
-                b.getCheckInDate(),
-                b.getCheckOutDate(),
-                b.getHotelRate()
-        );
-    }
 
-    public FlightReservationResponse getFlightByBookingId(Long bookingId) {
-        Optional<Booking> booking = repository.findById(bookingId);
-        if (booking.isEmpty()) return null;
-        Booking b = booking.get();
-        return new FlightReservationResponse(
-            null,
-            b.getBookingId(),
-            b.getAirlineCode(),
-            b.getFlightNumber(),
-            b.getDepartureDate(),
-            b.getDepartureTime(),
-            b.getArriveDate(),
-            b.getArriveTime(),
-            b.getFlightRate(),
-            b.getOriginAirportCode(),
-            b.getDestinationAirportCode()
-        );
-    }
 
-    public HotelDTO getHotelByBookingId(Long bookingId) {
-        Optional<Booking> booking = repository.findById(bookingId);
-        if (booking.isEmpty()) return null;
-        Booking b = booking.get();
-        return new HotelDTO(
-            b.getHotelName(),
-            null,        // description - not stored on Booking
-            null,        // address - not stored on Booking
-            b.getHotelRate().doubleValue(),
-            false        // isPetFriendly - not stored on Booking
-        );
-    }
+
 }
