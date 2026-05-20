@@ -23,16 +23,25 @@ public class AuthService {
         }
 
         boolean validLogin =
-                (loginValue.equalsIgnoreCase("demo@test.com")
-                || loginValue.equalsIgnoreCase("demo")
-                || loginValue.equalsIgnoreCase("agent1"))
-                && password.equals("password123");
+                (
+                    loginValue.equalsIgnoreCase("john.doe@example.com")
+                    && password.equals("CMPE-131@2026")
+                )
+                ||
+                (
+                    (
+                        loginValue.equalsIgnoreCase("demo@test.com")
+                        || loginValue.equalsIgnoreCase("demo")
+                        || loginValue.equalsIgnoreCase("agent1")
+                    )
+                    && password.equals("password123")
+                );
 
         if (validLogin) {
             UserDTO user = new UserDTO(
                     1L,
-                    "Demo User",
-                    "demo@test.com",
+                    "John Doe",
+                    "john.doe@example.com",
                     "USER"
             );
 
