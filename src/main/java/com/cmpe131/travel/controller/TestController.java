@@ -12,9 +12,4 @@ public class TestController {
     public String testDB() {
         return "DB connection OK";
     }
-
-    @GetMapping("/users")
-    public String getUsers() {
-        return "TODO: users endpoint";
-    }
 }
