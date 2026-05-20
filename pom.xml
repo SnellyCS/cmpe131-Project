@@ -30,27 +30,57 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+    	<!-- Web (controllers, REST endpoints) -->
+    	<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-web</artifactId>
+    	</dependency>
+
+		<!-- Swagger / OpenAPI documentation -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-webmvc</artifactId>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>3.0.3</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<dependency>
+    	<!-- JPA (Entity, Repository, @Id, etc.) -->
+    	<dependency>
+        	<groupId>org.springframework.boot</groupId>
+        	<artifactId>spring-boot-starter-data-jpa</artifactId>
+    	</dependency>
+
+    	<!-- JDBC (optional, but fine to keep) -->
+    	<dependency>
         	<groupId>org.springframework.boot</groupId>
         	<artifactId>spring-boot-starter-jdbc</artifactId>
     	</dependency>
 
+    	<!-- SQLite driver -->
     	<dependency>
         	<groupId>org.xerial</groupId>
         	<artifactId>sqlite-jdbc</artifactId>
         	<version>3.45.3.0</version>
     	</dependency>
+
+    	<!-- Lombok (optional helper) -->
+    	<dependency>
+        	<groupId>org.projectlombok</groupId>
+        	<artifactId>lombok</artifactId>
+        	<optional>true</optional>
+    	</dependency>
+
+		<dependency>
+    		<groupId>org.hibernate.orm</groupId>
+    		<artifactId>hibernate-community-dialects</artifactId>
+		</dependency>
+
+		<dependency>
+    		<groupId>org.springdoc</groupId>
+    		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    		<version>2.5.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

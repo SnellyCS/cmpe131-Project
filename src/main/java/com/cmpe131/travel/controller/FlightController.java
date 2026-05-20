@@ -1,30 +1,53 @@
 package com.cmpe131.travel.controller;
-
+import com.cmpe131.travel.dto.FlightReservationRequest;
+import com.cmpe131.travel.dto.FlightReservationResponse;
+import com.cmpe131.travel.service.BookingService;
+import com.cmpe131.travel.service.FlightService;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/flights")
 public class FlightController {
 
-    @GetMapping("/search")
-    public List<Map<String, Object>> searchFlights(
-            @RequestParam String origin,
-            @RequestParam String destination,
-            @RequestParam String departDate
-    ) {
-        List<Map<String, Object>> flights = new ArrayList<>();
+    private final FlightService service;
+    private final BookingService bookingService;
 
-        Map<String, Object> flight1 = new HashMap<>();
-        flight1.put("airline", "United");
-        flight1.put("flightNumber", "UA123");
-        flight1.put("origin", origin);
-        flight1.put("destination", destination);
-        flight1.put("departDate", departDate);
-        flight1.put("price", 250);
-
-        flights.add(flight1);
-
-        return flights;
+    public FlightController(FlightService service, BookingService bookingService) {
+        this.service = service;
+        this.bookingService = bookingService;
     }
+
+    @PostMapping("/reservations")
+    public FlightReservationResponse createFlightReservation(@RequestBody FlightReservationRequest request) {
+        return service.createFlightReservation(request);
+    }
+
+    // Now pulls flight info from Bookings table instead of Flight_Reservations
+    @GetMapping("/reservations/{bookingId}")
+    public FlightReservationResponse getFlightReservationByBookingId(@PathVariable Long bookingId) {
+        return bookingService.getFlightByBookingId(bookingId);
+    }
+
+    @GetMapping("/reservations/reservation/{reservationNo}")
+    public FlightReservationResponse getFlightReservationByReservationNo(@PathVariable Long reservationNo) {
+        return service.getFlightReservationByReservationNo(reservationNo);
+    }
+
+    @GetMapping("/search")
+    public String searchFlights(
+            @RequestParam("from_code") String fromCode,
+            @RequestParam("to_code") String toCode,
+            @RequestParam("depart_date") String departDate,
+            @RequestParam(value = "return_date", required = false) String returnDate,
+            @RequestParam(defaultValue = "1") int adults,
+            @RequestParam(defaultValue = "0") int children
+    ) {
+        //fromCode = fromCode.replace(".AIRPORT", "");
+        //toCode = toCode.replace(".AIRPORT", "");
+
+        return service.searchFlights(fromCode, toCode, departDate, returnDate, adults);
+    }
+
+
 }
